@@ -57,7 +57,7 @@ public class TicTacToe implements ActionListener{
         reset_button_panel.setLayout(new GridLayout(0,1));
         reset_button_panel.setBounds(0, 0, 800, 50);
 
-        reset_button.setText("Reset");
+        //reset_button.setText("Reset");
         reset_button.addActionListener(this);
         reset_button_panel.add(reset_button);
 
@@ -118,6 +118,8 @@ public class TicTacToe implements ActionListener{
             e.printStackTrace();
         }
          */
+
+        reset_button.setText("Reset");
 
         if(random.nextInt(2) == 0) {
             player1_turn = true;
@@ -209,7 +211,7 @@ public class TicTacToe implements ActionListener{
                 buttons[i].setEnabled(false);
             }
         }
-
+        reset_button.setText("Rematch?");
         textfield.setText("X wins");
     }
 
@@ -226,6 +228,7 @@ public class TicTacToe implements ActionListener{
             }
         }
 
+        reset_button.setText("Rematch?");
         textfield.setText("O wins");
     }
 }
