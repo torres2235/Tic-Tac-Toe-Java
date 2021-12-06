@@ -1,16 +1,25 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+
+//javax.swing allows us to build our GUI
 import javax.swing.*;
 
 public class TicTacToe implements ActionListener{
 
+    //will help us randomly choose which player starts
     Random random = new Random();
+
     JFrame frame = new JFrame();
+
     JPanel title_panel = new JPanel();
     JPanel button_panel = new JPanel();
     JLabel textfield = new JLabel();
     JButton[] buttons = new JButton[9];
+
+    JPanel reset_button_panel = new JPanel();
+    JButton reset_button = new JButton();
+
     boolean player1_turn; //if player1_turn = true, player1's turn; if false, player2's turn
 
     //constructor for TicTacToe
@@ -24,7 +33,7 @@ public class TicTacToe implements ActionListener{
 
         textfield.setBackground(new Color(25, 25, 25));
         textfield.setForeground(new Color(25, 255, 0));
-        textfield.setFont(new Font("Ink Free", Font.BOLD, 75));
+        textfield.setFont(new Font("Serif", Font.BOLD, 75));
         textfield.setHorizontalAlignment(JLabel.CENTER);
         textfield.setText("Tic-Tac-Toe");
         textfield.setOpaque(true);
@@ -38,18 +47,29 @@ public class TicTacToe implements ActionListener{
         for(int i = 0; i < 9; i++) {
             buttons[i] = new JButton();
             button_panel.add(buttons[i]);
-            buttons[i].setFont(new Font("MV Boli", Font.BOLD, 120));
+            buttons[i].setFont(new Font("Helvetica", Font.BOLD, 120));
             buttons[i].setFocusable(false);
             buttons[i].addActionListener(this);
+            buttons[i].setOpaque(true);
+            //buttons[i].setBorderPainted(false);
         }
+
+        reset_button_panel.setLayout(new GridLayout(0,1));
+        reset_button_panel.setBounds(0, 0, 800, 50);
+
+        reset_button.setText("Reset");
+        reset_button.addActionListener(this);
+        reset_button_panel.add(reset_button);
 
         title_panel.add(textfield);
         frame.add(title_panel, BorderLayout.NORTH);
         frame.add(button_panel);
+        frame.add(reset_button_panel, BorderLayout.SOUTH);
 
         firstTurn();
     }
 
+    @Override
     public void actionPerformed (ActionEvent e) {
 
         for(int i = 0; i < 9; i++) {
@@ -76,17 +96,28 @@ public class TicTacToe implements ActionListener{
             }
 
         }
+
+        if(e.getSource() == reset_button) {
+            for(int i = 0; i < 9; i++) {
+                buttons[i].setEnabled(true);
+                buttons[i].setBackground(Color.white);
+                buttons[i].setText("");
+                firstTurn();
+            }
+        }
     }
 
     //method that decides which player goes first (X or O)
     public void firstTurn() {
 
         //makes this method sleep to allow "Tic-Tac-Toe" to display for 2000ms before starting game
+        /*
         try{
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+         */
 
         if(random.nextInt(2) == 0) {
             player1_turn = true;
@@ -172,19 +203,27 @@ public class TicTacToe implements ActionListener{
         buttons[c].setBackground(Color.GREEN);
 
         for(int i = 0; i < 9; i++) {
-            buttons[i].setEnabled(false);
+            if(buttons[i] == buttons[a]  || buttons[i] == buttons[b] || buttons[i] == buttons[c]) {
+                continue;
+            } else {
+                buttons[i].setEnabled(false);
+            }
         }
 
         textfield.setText("X wins");
     }
 
     public void oWins(int a, int b, int c){
-        buttons[a].setBackground(new Color(0, 255, 0));
-        buttons[b].setBackground(new Color(0, 255, 0));
-        buttons[c].setBackground(new Color(0, 255, 0));
+        buttons[a].setBackground(Color.green);
+        buttons[b].setBackground(Color.GREEN);
+        buttons[c].setBackground(Color.GREEN);
 
         for(int i = 0; i < 9; i++) {
-            buttons[i].setEnabled(false);
+            if (buttons[i] == buttons[a] || buttons[i] == buttons[b] || buttons[i] == buttons[c]) {
+                continue;
+            } else {
+                buttons[i].setEnabled(false);
+            }
         }
 
         textfield.setText("O wins");
